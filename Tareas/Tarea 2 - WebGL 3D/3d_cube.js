@@ -260,7 +260,7 @@ function createPyramid(gl, translation, rotationAxis)
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeIndexBuffer);
 
 
-    let cubeIndices = [
+    let pyramidIndices = [
         0, 1, 2,        // Front face
         3, 4, 5,        // Right face
         6, 7, 8,        // Left face
@@ -270,17 +270,17 @@ function createPyramid(gl, translation, rotationAxis)
 
     // gl.ELEMENT_ARRAY_BUFFER: Buffer used for element indices.
     // Uint16Array: Array of 16-bit unsigned integers.
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(cubeIndices), gl.STATIC_DRAW);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(pyramidIndices), gl.STATIC_DRAW);
 
    
-    let cube = {
+    let pyramid = {
             buffer:vertexBuffer, colorBuffer:colorBuffer, indices:cubeIndexBuffer,
             vertSize:3, nVerts:12, colorSize:4, nColors: 12, nIndices:12,
             primtype:gl.TRIANGLES, modelViewMatrix: mat4.create(), currentTime : Date.now()};
 
-    mat4.translate(cube.modelViewMatrix, cube.modelViewMatrix, translation);
+    mat4.translate(pyramid.modelViewMatrix, pyramid.modelViewMatrix, translation);
 
-    cube.update = function()
+    pyramid.update = function()
     {
         let now = Date.now();
         let deltat = now - this.currentTime;
@@ -296,7 +296,7 @@ function createPyramid(gl, translation, rotationAxis)
         mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, angle, rotationAxis);
     };
     
-    return cube;
+    return pyramid;
 }
 
 function createPyramidPentagon(gl, translation, rotationAxis)
@@ -355,6 +355,8 @@ function createPyramidPentagon(gl, translation, rotationAxis)
         [1.0, 1.0, 0.0, 1.0], // Frente izquierda
         [0.0, 1.0, 1.0, 1.0], // Atras derecha
         [0.5, 1.0, 0.5, 1.0], // Atras izquierda
+
+        
     ];
 
     // Each vertex must have the color information, that is why the same color is 
@@ -377,7 +379,7 @@ function createPyramidPentagon(gl, translation, rotationAxis)
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeIndexBuffer);
 
 
-    let cubeIndices = [
+    let phIndices = [
         0, 4, 3,    0, 1, 3,    1, 2, 3, // Base
         5, 6, 7,                        // Frente 
         8, 9, 10,                       // Frente derecha
@@ -388,33 +390,38 @@ function createPyramidPentagon(gl, translation, rotationAxis)
 
     // gl.ELEMENT_ARRAY_BUFFER: Buffer used for element indices.
     // Uint16Array: Array of 16-bit unsigned integers.
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(cubeIndices), gl.STATIC_DRAW);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(phIndices), gl.STATIC_DRAW);
 
    
-    let cube = {
+    let ph = {
             buffer:vertexBuffer, colorBuffer:colorBuffer, indices:cubeIndexBuffer,
             vertSize:3, nVerts:20, colorSize:4, nColors: 20, nIndices:24,
             primtype:gl.TRIANGLES, modelViewMatrix: mat4.create(), currentTime : Date.now()};
 
-    mat4.translate(cube.modelViewMatrix, cube.modelViewMatrix, translation);
-
-    cube.update = function()
+    
+    mat4.translate(ph.modelViewMatrix, ph.modelViewMatrix, translation);  
+        
+    
+    
+    ph.update = function()
     {
         let now = Date.now();
         let deltat = now - this.currentTime;
         this.currentTime = now;
         let fract = deltat / duration;
         let angle = Math.PI * 2 * fract;
-    
+
         // Rotates a mat4 by the given angle
         // mat4 out the receiving matrix
         // mat4 a the matrix to rotate
         // Number rad the angle to rotate the matrix by
         // vec3 axis the axis to rotate around
         mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, angle, rotationAxis);
+
+        
     };
-    
-    return cube;
+
+    return ph;
 }
 
 
@@ -509,7 +516,7 @@ function createOctaedro(gl, translation, rotationAxis)
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeIndexBuffer);
 
 
-    let cubeIndices = [
+    let octIndices = [
         0, 1, 2,        // Front face up
         3, 4, 5,        // Right face up
         6, 7, 8,        // Left face up
@@ -523,23 +530,41 @@ function createOctaedro(gl, translation, rotationAxis)
 
     // gl.ELEMENT_ARRAY_BUFFER: Buffer used for element indices.
     // Uint16Array: Array of 16-bit unsigned integers.
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(cubeIndices), gl.STATIC_DRAW);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(octIndices), gl.STATIC_DRAW);
 
    
-    let cube = {
+    let octaedro = {
             buffer:vertexBuffer, colorBuffer:colorBuffer, indices:cubeIndexBuffer,
-            vertSize:3, nVerts:24, colorSize:4, nColors: 24, nIndices:24,
+            vertSize:3, nVerts:24, colorSize:4, nColors: 36, nIndices:24,
             primtype:gl.TRIANGLES, modelViewMatrix: mat4.create(), currentTime : Date.now()};
 
-    mat4.translate(cube.modelViewMatrix, cube.modelViewMatrix, translation);
+    mat4.translate(octaedro.modelViewMatrix, octaedro.modelViewMatrix, translation);
 
-    cube.update = function()
+    let flag = "bottom";
+
+    octaedro.update = function()
     {
         let now = Date.now();
         let deltat = now - this.currentTime;
         this.currentTime = now;
         let fract = deltat / duration;
         let angle = Math.PI * 2 * fract;
+
+        
+        if (translation[1] == 12){
+            flag = "top";
+        }else if (translation[1] == -12){
+            flag = "bottom";
+        }
+
+        if (flag == "bottom"){
+            translation[1] = translation[1] + 0.5;
+            this.modelViewMatrix[13] = this.modelViewMatrix[13] + 0.25;
+        }else if (flag == "top"){
+            translation[1] = translation[1] - 0.5;
+            this.modelViewMatrix[13] = this.modelViewMatrix[13] - 0.25;
+        }      
+
     
         // Rotates a mat4 by the given angle
         // mat4 out the receiving matrix
@@ -549,7 +574,7 @@ function createOctaedro(gl, translation, rotationAxis)
         mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, angle, rotationAxis);
     };
     
-    return cube;
+    return octaedro;
 }
 
 function createDodecaedro(gl, translation, rotationAxis)
@@ -704,9 +729,9 @@ function createDodecaedro(gl, translation, rotationAxis)
         [0.0, 0.5, 0.0, 1.0], // Frente izquierda nivel 2
         [0.0, 0.0, 0.5, 1.0], // Atras derecha nivel 2 
         [0.75, 0.5, 0.0, 1.0], // Atras medio nivel 2 
-        [0.5, 1.0, 0.0, 1.0], // Atras izquierda nivel 2
+        [0.0, 1.0, 0.0, 1.0], // Atras izquierda nivel 2
     
-        [0.5, 1.0, 0.5, 1.0], // Tapa arriba
+        [0.0, 1.0, 0.5, 1.0], // Tapa arriba
         
     ];
 
@@ -721,7 +746,10 @@ function createDodecaedro(gl, translation, rotationAxis)
     faceColors.forEach(color =>{
         for (let j=0; j < 4; j++)
             vertexColors.push(...color);
+            console.log(...color);
     });
+
+    console.log(vertexColors);
 
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertexColors), gl.STATIC_DRAW);
 
@@ -730,34 +758,34 @@ function createDodecaedro(gl, translation, rotationAxis)
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeIndexBuffer);
 
     // Corregir cosa para que cada cara de la figura tenga sus propios indices
-    let cubeIndices = [
+    let dodeIndices = [
         // Tapa abajo
         // ADE, ABD, BCD
-        0, 4, 3,        0, 1, 3,        1, 2, 3,
+        0, 1, 3,        0, 4, 3,        1, 2, 3,
 
         // Frente medio nivel 1
         // AJK, ABK, BFK
-        5, 8, 9,    5, 6, 8,    6, 7, 8,
+        5, 6, 8,        5, 8, 9,        6, 7, 8,
         
         // Frente derecha nivel 1
         // BFL, BCL, CGL
-        10, 13, 14,     10, 11, 13,     11, 12, 13,
+        10, 11, 13,     10, 13, 14,    11, 12, 13,
 
         // Frente izquierda nivel 1
         // EIO, AEO, AJO
-        15, 19, 18,     15, 16, 18,     16, 17, 18,
+        15, 16, 18,     15, 18, 19,     16, 17, 18,
 
         // Atras derecha nivel 1
         // CGM, CDM, DHM
-        20, 24, 23,     20, 21, 23,     21, 22, 23,
+        20, 21, 23,     20, 24, 23,     21, 22, 23,
 
         // Atras izquierda nivel 1
         // DHN, DEN, EIN
-        25, 28, 29,     25, 26, 28,     26, 27, 28,
+        25, 26, 28,     26, 27, 28,     25, 28, 29,       
         
         // Frente derecha nivel 2
         // FKP, FPQ, FLQ
-        30, 31, 34,     31, 33, 34,     31, 32, 33,
+        30, 31, 34,     31, 32, 33,     31, 33, 34,     
 
         // Frente izquierda nivel 2
         // JOY, JPY, JKP
@@ -765,35 +793,35 @@ function createDodecaedro(gl, translation, rotationAxis)
         
         // Atras derecha nivel 2
         // GLQ, GQR, GMR
-        40, 41, 44,     41, 44, 43,     41, 42, 43,
+        40, 41, 44,     41, 42, 43,     41, 43, 44,     
 
         // Atras medio nivel 2
         // HMR, HRS, HNS
-        45, 46, 49,     46, 49, 48,     46, 47, 48,
+        45, 46, 49,     46, 47, 48,     46, 49, 48,     
         
         // Atras izquierda nivel 2
         // INS, IST, IOT
-        50, 51, 54,     51, 54, 53,     51, 52, 53,
+        50, 51, 54,     51, 52, 53,     51, 53, 54, 
         
         // Tapa arriba
         // PST, PRS, PQR
-        55, 56, 59,     56, 59, 58,     56, 57, 58
+        55, 56, 59,     56, 57, 58,     56, 58, 59,     
       
     ];
 
     // gl.ELEMENT_ARRAY_BUFFER: Buffer used for element indices.
     // Uint16Array: Array of 16-bit unsigned integers.
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(cubeIndices), gl.STATIC_DRAW);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(dodeIndices), gl.STATIC_DRAW);
 
    
-    let cube = {
+    let dodecaedro = {
             buffer:vertexBuffer, colorBuffer:colorBuffer, indices:cubeIndexBuffer,
             vertSize:3, nVerts:60, colorSize:4, nColors: 60, nIndices: 108,
             primtype:gl.TRIANGLES, modelViewMatrix: mat4.create(), currentTime : Date.now()};
 
-    mat4.translate(cube.modelViewMatrix, cube.modelViewMatrix, translation);
+    mat4.translate(dodecaedro.modelViewMatrix, dodecaedro.modelViewMatrix, translation);
 
-    cube.update = function()
+    dodecaedro.update = function()
     {
         let now = Date.now();
         let deltat = now - this.currentTime;
@@ -806,10 +834,13 @@ function createDodecaedro(gl, translation, rotationAxis)
         // mat4 a the matrix to rotate
         // Number rad the angle to rotate the matrix by
         // vec3 axis the axis to rotate around
-        mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, angle, rotationAxis);
+
+        mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, angle, rotationAxis[0]);
+        mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, angle, rotationAxis[1]);
+        
     };
     
-    return cube;
+    return dodecaedro;
 }
 
 function createShader(gl, str, type)
