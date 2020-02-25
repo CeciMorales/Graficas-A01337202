@@ -367,10 +367,17 @@ function createPyramidPentagon(gl, translation, rotationAxis)
     //     for (let j=0; j < 4; j++)
     //         vertexColors.push(...color);
     // }
+
+    for (let i=0; i<5; i++){
+        vertexColors.push(...faceColors[0]);
+
+    }
+    
     faceColors.forEach(color =>{
-        for (let j=0; j < 4; j++)
+        for (let j=1; j < 4; j++)
             vertexColors.push(...color);
-    });
+            
+    });    
 
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertexColors), gl.STATIC_DRAW);
 
@@ -489,9 +496,9 @@ function createOctaedro(gl, translation, rotationAxis)
         [0.0, 0.0, 1.0, 1.0], // Top face up
         [1.0, 1.0, 0.0, 1.0], // Down face up
 
-        [0.5, 0.0, 0.0, 1.0], // Front face down 
-        [0.0, 0.5, 0.0, 1.0], // Back face down
-        [0.0, 0.0, 0.5, 1.0], // Top face down
+        [0.5, 0.0, 1.0, 1.0], // Front face down 
+        [0.0, 0.5, 1.0, 1.0], // Back face down
+        [0.0, 1.0, 0.5, 1.0], // Top face down
         [0.5, 1.0, 0.0, 1.0], // Bottom face down
         
     ];
@@ -505,7 +512,7 @@ function createOctaedro(gl, translation, rotationAxis)
     //         vertexColors.push(...color);
     // }
     faceColors.forEach(color =>{
-        for (let j=0; j < 4; j++)
+        for (let j=0; j < 3; j++)
             vertexColors.push(...color);
     });
 
@@ -725,11 +732,11 @@ function createDodecaedro(gl, translation, rotationAxis)
         [0.5, 0.0, 0.0, 1.0], // Atras derecha primer nivel 1
         [0.0, 0.5, 0.0, 1.0], // Atras izquierda primer nivel 1
 
-        [0.5, 0.0, 0.0, 1.0], // Frente derecha nivel 2       
-        [0.0, 0.5, 0.0, 1.0], // Frente izquierda nivel 2
-        [0.0, 0.0, 0.5, 1.0], // Atras derecha nivel 2 
+        [0.5, 1.0, 0.0, 1.0], // Frente derecha nivel 2       
+        [0.0, 0.5, 1.0, 1.0], // Frente izquierda nivel 2
+        [0.0, 0.75, 0.5, 1.0], // Atras derecha nivel 2 
         [0.75, 0.5, 0.0, 1.0], // Atras medio nivel 2 
-        [0.0, 1.0, 0.0, 1.0], // Atras izquierda nivel 2
+        [0.0, 1.0, 1.0, 1.0], // Atras izquierda nivel 2
     
         [0.0, 1.0, 0.5, 1.0], // Tapa arriba
         
@@ -744,12 +751,10 @@ function createDodecaedro(gl, translation, rotationAxis)
     //         vertexColors.push(...color);
     // }
     faceColors.forEach(color =>{
-        for (let j=0; j < 4; j++)
+        for (let j=0; j < 5; j++)
             vertexColors.push(...color);
-            console.log(...color);
     });
 
-    console.log(vertexColors);
 
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertexColors), gl.STATIC_DRAW);
 
