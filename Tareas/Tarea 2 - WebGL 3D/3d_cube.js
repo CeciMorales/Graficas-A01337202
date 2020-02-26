@@ -431,7 +431,6 @@ function createPyramidPentagon(gl, translation, rotationAxis)
     return ph;
 }
 
-
 function createOctaedro(gl, translation, rotationAxis)
 {    
     // Vertex Data
@@ -488,7 +487,6 @@ function createOctaedro(gl, translation, rotationAxis)
     let colorBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
 
-   
 
     let faceColors = [
         [1.0, 0.0, 0.0, 1.0], // Front face up
