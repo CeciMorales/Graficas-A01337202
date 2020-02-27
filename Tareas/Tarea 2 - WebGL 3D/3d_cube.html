@@ -16,7 +16,6 @@
 		        initViewport(gl, canvas);
 				initGL(canvas);
 				var pyramidPentagon = createPyramidPentagon(gl, [-6, 0, -8], [0.1, 1.0, 0.2]);
-				//var dodecaedro = createDodecaedro(gl, [1, 0, -15], [-0.4, 1.0, 0.1]);
 				rotation = 
 				[
 					[-0.4, 1.0, 0.1],
@@ -27,7 +26,6 @@
 				var rombo = createOctaedro(gl, [7 , 0, -10], [0, 1, 0]);
 		        initShader(gl);
 				run(gl, [pyramidPentagon, dodecaedro, rombo]);
-				//run(gl, cube)
 			}
 	);
 

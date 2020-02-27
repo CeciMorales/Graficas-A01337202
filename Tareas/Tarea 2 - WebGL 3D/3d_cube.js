@@ -730,7 +730,7 @@ function createDodecaedro(gl, translation, rotationAxis)
         [0.5, 0.0, 0.0, 1.0], // Atras derecha primer nivel 1
         [0.0, 0.5, 0.0, 1.0], // Atras izquierda primer nivel 1
 
-        [0.5, 1.0, 0.0, 1.0], // Frente derecha nivel 2       
+        [0.6, 0.2, 0.2, 1.0], // Frente derecha nivel 2       
         [0.0, 0.5, 1.0, 1.0], // Frente izquierda nivel 2
         [0.0, 0.75, 0.5, 1.0], // Atras derecha nivel 2 
         [0.75, 0.5, 0.0, 1.0], // Atras medio nivel 2 
