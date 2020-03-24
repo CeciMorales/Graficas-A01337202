@@ -299,7 +299,8 @@ function createPyramid(gl, translation, rotationAxis)
     return pyramid;
 }
 
-function createPyramidPentagon(gl, translation, rotationAxis)
+
+ createPyramidPentagon(gl, translation, rotationAxis)
 {    
     // Vertex Data
     let vertexBuffer;
